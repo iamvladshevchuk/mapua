@@ -27,7 +27,7 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
 
         const form = document.createElement("div")
         
-        const popup = new mapboxgl.Popup()
+        const popup = new mapboxgl.Popup({ className: "mapboxgl-popup-form" })
           .setLngLat(e.lngLat)
           .setDOMContent(form)
           .setMaxWidth("300px")
