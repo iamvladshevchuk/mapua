@@ -14,7 +14,7 @@ export default function MarkerListItems({ query }: Props ) {
         return <p>Loading...</p>
 
     if (query.isError)
-        return <p>Unexpected error: {query.error?.response?.data?.message || "Unknown"}</p>
+        return <p>Unexpected error: {query.error.response?.data?.message || query.error.message || "Unknown"}</p>
 
     if (!markers.length)
         return <p>No events in this region.</p>
