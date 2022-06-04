@@ -1,0 +1,60 @@
+name: Deployment Workflow
+on: [push, pull_request]
+jobs:
+  testing:
+    name: Back End Testing
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: tests
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, dom, fileinfo, mysql
+      - name: Open `backend` folder
+        run: cd backend
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Prepare the application
+        run: |
+          php -r "file_exists('.env') || copy('.env.ci', '.env');"
+          php artisan key:generate
+      - name: Run tests
+        run: php artisan test
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+
+  deployment:
+    name: Deployment
+    if: github.ref == 'refs/heads/main'
+    needs: [testing]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        username: ${{ secrets.SSH_USERNAME }}
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/ssh-github
+          cd ${{ secrets.SSH_PATH }}
+          git pull
+          cd ${{ secrets.SSH_PATH }}/backend
+          php8.1 /usr/bin/composer install
+          cd ${{ secrets.SSH_PATH }}/frontend
+          npm ci
+          npm run build
+          php8.1 artisan migrate --force
