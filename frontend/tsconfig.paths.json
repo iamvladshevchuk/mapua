@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@root/*": ["./*"],
+      "@boot/*": ["boot/*"],
+      "@components/*": ["shared/components/*"],
+      "@markers/*": ["domains/markers/*"],
+      "@helpers/*": ["shared/helpers/*"],
+      "@shared/*": ["shared/*"]
+    }
+  }
+}
+  
