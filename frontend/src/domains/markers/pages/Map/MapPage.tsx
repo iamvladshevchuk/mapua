@@ -12,16 +12,7 @@ export default function MapPage() {
   return (
     <MapContext.Provider value={{ map }}>
       <div className="h-screen" ref={container} />
-      <div 
-        className={` 
-          absolute 
-          p-4 
-          bottom-0 lg:top-0 lg:bottom-auto
-          left-0 lg:right-0 lg:left-auto
-          w-full lg:w-1/5
-          h-1/2 lg:h-screen 
-        `}
-      ><MarkerList /></div>
+      <MarkerList />
     </MapContext.Provider>
   )
 }
