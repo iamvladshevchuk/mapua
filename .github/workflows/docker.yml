@@ -22,15 +22,16 @@ jobs:
         with:
           php-version: '8.1'
           extensions: mbstring, dom, fileinfo, mysql
-      - name: Open `backend` folder
-        run: cd backend
       - name: Install composer dependencies
+        working-directory: ./backend
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Prepare the application
+        working-directory: ./backend
         run: |
           php -r "file_exists('.env') || copy('.env.ci', '.env');"
           php artisan key:generate
       - name: Run tests
+        working-directory: ./backend
         run: php artisan test
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
