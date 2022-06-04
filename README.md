@@ -11,11 +11,15 @@ Demo: https://mapua.iamvladshevchuk.com
 * Typescript
 * Mapbox.gl
 * Axios
+* Tailwind
 
 ### Back end
 * Laravel 9
 * PHPUnit
 * REST API
+
+### Deployment
+* Github Workflow
 
 ## Setup 
 1. `docker-compose up --build -d` runs a docker-compose to quickly create front end, back end, database containers
