@@ -60,14 +60,17 @@ code {
   .mapboxgl-popup-form {
     max-width: none !important;
     padding: 16px;
+    padding-top: 120px;
     width: 100%;
     transform: none !important;
     height: 100vh;
     z-index: 10;
   }
 
-  .mapboxgl-popup-tip {
-    display: none;
+  .mapboxgl-popup-form .mapboxgl-popup-tip {
+    align-self: center !important;
+    border: 10px solid transparent !important;
+    border-bottom-color: #fff !important;
   }
 
   .mapboxgl-popup-anchor-top-left .mapboxgl-popup-content {

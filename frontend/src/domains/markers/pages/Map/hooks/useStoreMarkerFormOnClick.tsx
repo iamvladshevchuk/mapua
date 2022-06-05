@@ -33,6 +33,12 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
           .setMaxWidth("300px")
           .addTo(map!)
 
+        map!.flyTo({ 
+          center: e.lngLat,
+          speed: .4,
+          offset: getOffsetIfMobile()
+        })
+
         const handleSubmit: SubmitHandler<Omit<Resources.Marker, "id">> = values => {
           store.mutate(values)
           popup.remove()
@@ -49,4 +55,12 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
       map?.off('load', openFormOnClick)
     }
   }, [map])
+}
+
+function getOffsetIfMobile(): [number, number] {
+  if (window.innerWidth >= 1024)
+    return [0, 0]
+
+  const topOffset = 115
+  return [0, - (window.innerHeight / 2) + topOffset]
 }
