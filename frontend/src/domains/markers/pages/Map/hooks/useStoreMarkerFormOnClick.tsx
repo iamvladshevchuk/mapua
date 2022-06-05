@@ -1,5 +1,5 @@
 import MarkerController from "@markers/api/MarkerController";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { PaddingOptions } from "mapbox-gl";
 import React, { useEffect } from "react";
 import { createRoot } from 'react-dom/client';
 import { SubmitHandler } from "react-hook-form";
@@ -34,18 +34,17 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
           .setMaxWidth("300px")
           .addTo(map!)
 
-        const flyToCenter = () => {
-          map!.flyTo({ 
-            center: e.lngLat,
-            speed: .4,
-            offset: whenMobile(() => getFlyOffset()) || [0, 0]
-          })
-        }
-
-        flyToCenter()
+        map!.flyTo({ 
+          center: e.lngLat,
+          speed: .4,
+          padding: whenMobile(() => getCameraPadding()) || { top: 0, bottom: 0, left: 0, right: 0 }
+        })
 
         const refitCenter = () => {
-          whenMobile(() => flyToCenter())
+          whenMobile(() => map!.jumpTo({ 
+            center: e.lngLat,
+            padding: getCameraPadding()
+          }))
         }
 
         window.addEventListener('resize', refitCenter)
@@ -71,9 +70,13 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
   }, [map])
 }
 
-function getFlyOffset(): [number, number] {
-  const topOffset = 115
-  return [0, - (window.innerHeight / 2) + topOffset]
+function getCameraPadding(): PaddingOptions {
+  return {
+    top: 0,
+    bottom: window.innerHeight - 220,
+    left: 0,
+    right: 0
+  }
 }
 
 function toggleMapInteractions(map: mapboxgl.Map, popup: mapboxgl.Popup) {
