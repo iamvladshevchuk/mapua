@@ -48,7 +48,10 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
         }
 
         window.addEventListener('resize', refitCenter)
-        popup.on('close', () => window.removeEventListener('resize', refitCenter))
+        popup.on('close', () => {
+          // this timeout is needed to make closing the form less bumpy
+          setTimeout(() => window.removeEventListener('resize', refitCenter), 500)
+        })
 
         toggleMapInteractions(map!, popup)
 
