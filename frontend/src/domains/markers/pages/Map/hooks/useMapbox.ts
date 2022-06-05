@@ -24,6 +24,8 @@ export default function useMapbox(container: React.RefObject<HTMLElement | null>
     }))
     
     setMap(mapboxglMap)
+
+    return () => mapboxglMap.remove()
   }, [])
 
   usePopulateMarkers(map, markers)
