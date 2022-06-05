@@ -34,11 +34,22 @@ export default function useStoreMarkerFormOnClick(map: mapboxgl.Map | undefined,
           .setMaxWidth("300px")
           .addTo(map!)
 
-        map!.flyTo({ 
-          center: e.lngLat,
-          speed: .4,
-          offset: whenMobile(() => getFlyOffset()) || [0, 0]
-        })
+        const flyToCenter = () => {
+          map!.flyTo({ 
+            center: e.lngLat,
+            speed: .4,
+            offset: whenMobile(() => getFlyOffset()) || [0, 0]
+          })
+        }
+
+        flyToCenter()
+
+        const refitCenter = () => {
+          whenMobile(() => flyToCenter())
+        }
+
+        window.addEventListener('resize', refitCenter)
+        popup.on('close', () => window.removeEventListener('resize', refitCenter))
 
         toggleMapInteractions(map!, popup)
 
