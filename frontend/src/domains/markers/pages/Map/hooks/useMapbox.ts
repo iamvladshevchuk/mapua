@@ -6,9 +6,6 @@ export default function useMapbox(container: React.RefObject<HTMLElement | null>
   const [map, setMap] = useState<mapboxgl.Map>()
 
   useEffect(() => {
-    if (map)
-      return
-
     if (!container.current)
       return
 
@@ -25,7 +22,9 @@ export default function useMapbox(container: React.RefObject<HTMLElement | null>
     
     setMap(mapboxglMap)
 
-    return () => mapboxglMap.remove()
+    return () => {
+      mapboxglMap.remove()
+    }
   }, [])
 
   usePopulateMarkers(map, markers)
