@@ -1,6 +1,6 @@
 # `Ukraine Report Map` open source project
 
-This project was initially meant to help Ukrainians to croudsource events from the whole country in the war time. But then I had doubts about usefulness of a website like this and I decided to left it as an open source MVP. It might be useful for someone who has a similar idea in mind. This is a demo version and it connects all your markers to your IP to prevent spam.
+This project was initially meant to help Ukrainians to crowdsource events from the whole country in the war time. But then I had doubts about usefulness of a website like this and I decided to left it as an open source MVP. It might be useful for someone who has a similar idea in mind. This is a demo version and it connects all your markers to your IP to prevent spam.
 
 Demo: https://mapua.iamvladshevchuk.com
 
